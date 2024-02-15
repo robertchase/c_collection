@@ -39,7 +39,7 @@ _extractor (void *item) {
 }
 
 C_SYMBOL *
-c_symbol_create () {
+c_symbol_create (void) {
 
   C_SYMBOL *s = (C_SYMBOL *) malloc (sizeof (C_SYMBOL));
   if (s) {
