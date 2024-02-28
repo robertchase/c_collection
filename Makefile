@@ -119,9 +119,9 @@ test: test_c_buffer test_c_hash test_c_iterator test_c_keyedset test_c_list test
 	rm test_c_symbol
 
 install: c_collection.a
-	-mkdir $(SHARED_LIB) 2>/dev/null || true
+	-mkdir -p $(SHARED_LIB)
 	-cp c_collection.a $(SHARED_LIB)/
-	-mkdir $(SHARED_INC) 2>/dev/null || true
+	-mkdir -p $(SHARED_INC)
 	-cp $(INC)/hash_func.h $(SHARED_INC)/
 	-cp $(INC)/c_buffer.h $(SHARED_INC)/
 	-cp $(INC)/c_hash.h $(SHARED_INC)/
