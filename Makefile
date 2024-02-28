@@ -7,7 +7,7 @@ SHARED_INC := $(HOME)/inc
 SHARED_BIN := $(HOME)/bin
 
 IFLAGS := -I $(INC) -I $(SHARED_INC)
-CFLAGS := -g -Werror -Wall -Wmissing-prototypes -Wmissing-declarations -Wstrict-prototypes -Wunused
+CFLAGS := -g -O -Wuninitialized -Werror -Wall -Wmissing-prototypes -Wmissing-declarations -Wstrict-prototypes -Wunused
 LFLAGS := 
 
 c_collection.a: $(OBJ)/fnv.o $(OBJ)/hash_func.o $(OBJ)/c_buffer.o $(OBJ)/c_hash.o $(OBJ)/c_iterator.o $(OBJ)/c_keyedset.o $(OBJ)/c_list.o $(OBJ)/c_map.o $(OBJ)/c_symbol.o

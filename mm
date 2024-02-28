@@ -1,7 +1,7 @@
 BUILD c_collection.a
 
 CFLAGS -g
-#CFLAGS -O -Wuninitialized
+CFLAGS -O -Wuninitialized
 CFLAGS -Werror -Wall -Wmissing-prototypes -Wmissing-declarations -Wstrict-prototypes -Wunused
 
 SOURCE fnv.c
