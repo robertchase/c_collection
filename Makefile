@@ -1,92 +1,102 @@
-IFLAGS = -I inc -I /Users/bob/inc
-CFLAGS = -g -Werror -Wall -Wmissing-prototypes -Wmissing-declarations -Wstrict-prototypes -Wunused
+SRC := src
+INC := inc
+SHARED_LIB := $(HOME)/lib
+SHARED_INC := $(HOME)/inc
+SHARED_BIN := $(HOME)/bin
+TEST := test
+OBJ := obj
 
-collection.a: obj/fnv.o obj/hash_func.o obj/c_buffer.o obj/c_hash.o obj/c_iterator.o obj/c_keyedset.o obj/c_list.o obj/c_map.o obj/c_symbol.o
-	$(AR) ru collection.a obj/fnv.o obj/hash_func.o obj/c_buffer.o obj/c_hash.o obj/c_iterator.o obj/c_keyedset.o obj/c_list.o obj/c_map.o obj/c_symbol.o
-	ranlib collection.a
+IFLAGS := -I $(INC) -I $(SHARED_INC)
+CFLAGS := -g -Werror -Wall -Wmissing-prototypes -Wmissing-declarations -Wstrict-prototypes -Wunused
+LFLAGS := 
 
-obj/fnv.o: src/fnv.c inc/fnv.h
+c_collection.a: $(OBJ)/fnv.o $(OBJ)/hash_func.o $(OBJ)/c_buffer.o $(OBJ)/c_hash.o $(OBJ)/c_iterator.o $(OBJ)/c_keyedset.o $(OBJ)/c_list.o $(OBJ)/c_map.o $(OBJ)/c_symbol.o
+	$(AR) ru c_collection.a $(OBJ)/fnv.o $(OBJ)/hash_func.o $(OBJ)/c_buffer.o $(OBJ)/c_hash.o $(OBJ)/c_iterator.o $(OBJ)/c_keyedset.o $(OBJ)/c_list.o $(OBJ)/c_map.o $(OBJ)/c_symbol.o
+	ranlib c_collection.a
+
+$(OBJ)/fnv.o: $(SRC)/fnv.c $(INC)/fnv.h
 	gcc $(CFLAGS) $(IFLAGS) -c $< -o $@
 
-obj/hash_func.o: src/hash_func.c inc/hash_func.h inc/fnv.h
+$(OBJ)/hash_func.o: $(SRC)/hash_func.c $(INC)/hash_func.h $(INC)/fnv.h
 	gcc $(CFLAGS) $(IFLAGS) -c $< -o $@
 
-obj/c_buffer.o: src/c_buffer.c inc/c_buffer.h
+$(OBJ)/c_buffer.o: $(SRC)/c_buffer.c $(INC)/c_buffer.h
 	gcc $(CFLAGS) $(IFLAGS) -c $< -o $@
 
-obj/c_hash.o: src/c_hash.c inc/c_list.h inc/c_iterator.h inc/c_hash.h
+$(OBJ)/c_hash.o: $(SRC)/c_hash.c $(INC)/c_list.h $(INC)/c_iterator.h $(INC)/c_hash.h
 	gcc $(CFLAGS) $(IFLAGS) -c $< -o $@
 
-obj/c_iterator.o: src/c_iterator.c inc/c_iterator.h
+$(OBJ)/c_iterator.o: $(SRC)/c_iterator.c $(INC)/c_iterator.h
 	gcc $(CFLAGS) $(IFLAGS) -c $< -o $@
 
-obj/c_keyedset.o: src/c_keyedset.c inc/c_hash.h inc/c_iterator.h \
-  inc/c_keyedset.h inc/hash_func.h
+$(OBJ)/c_keyedset.o: $(SRC)/c_keyedset.c $(INC)/c_hash.h $(INC)/c_iterator.h \
+  $(INC)/c_keyedset.h $(INC)/hash_func.h
 	gcc $(CFLAGS) $(IFLAGS) -c $< -o $@
 
-obj/c_list.o: src/c_list.c inc/c_list.h inc/c_iterator.h
+$(OBJ)/c_list.o: $(SRC)/c_list.c $(INC)/c_list.h $(INC)/c_iterator.h
 	gcc $(CFLAGS) $(IFLAGS) -c $< -o $@
 
-obj/c_map.o: src/c_map.c inc/c_hash.h inc/c_iterator.h inc/c_map.h \
-  inc/hash_func.h
+$(OBJ)/c_map.o: $(SRC)/c_map.c $(INC)/c_hash.h $(INC)/c_iterator.h $(INC)/c_map.h \
+  $(INC)/hash_func.h
 	gcc $(CFLAGS) $(IFLAGS) -c $< -o $@
 
-obj/c_symbol.o: src/c_symbol.c inc/c_hash.h inc/c_iterator.h inc/c_symbol.h \
-  inc/hash_func.h
+$(OBJ)/c_symbol.o: $(SRC)/c_symbol.c $(INC)/c_hash.h $(INC)/c_iterator.h $(INC)/c_symbol.h \
+  $(INC)/hash_func.h
 	gcc $(CFLAGS) $(IFLAGS) -c $< -o $@
 
-obj/test_c_buffer.o: test/test_c_buffer.c inc/c_buffer.h
+$(OBJ)/test_c_buffer.o: $(TEST)/test_c_buffer.c $(INC)/c_buffer.h
+
 	gcc $(CFLAGS) $(IFLAGS) -c $< -o $@
 
-obj/test_c_hash.o: test/test_c_hash.c inc/c_hash.h inc/c_iterator.h \
-  inc/hash_func.h
+test_c_buffer: $(OBJ)/test_c_buffer.o c_collection.a
+	gcc $(OBJ)/test_c_buffer.o c_collection.a $(LFLAGS) -o $@
+
+$(OBJ)/test_c_hash.o: $(TEST)/test_c_hash.c $(INC)/c_hash.h $(INC)/c_iterator.h \
+  $(INC)/hash_func.h
+
 	gcc $(CFLAGS) $(IFLAGS) -c $< -o $@
 
-obj/test_c_iterator.o: test/test_c_iterator.c inc/c_iterator.h
+test_c_hash: $(OBJ)/test_c_hash.o c_collection.a
+	gcc $(OBJ)/test_c_hash.o c_collection.a $(LFLAGS) -o $@
+
+$(OBJ)/test_c_iterator.o: $(TEST)/test_c_iterator.c $(INC)/c_iterator.h
+
 	gcc $(CFLAGS) $(IFLAGS) -c $< -o $@
 
-obj/test_c_keyedset.o: test/test_c_keyedset.c inc/c_keyedset.h \
-  inc/c_iterator.h inc/c_iterator.h inc/c_map.h
+test_c_iterator: $(OBJ)/test_c_iterator.o c_collection.a
+	gcc $(OBJ)/test_c_iterator.o c_collection.a $(LFLAGS) -o $@
+
+$(OBJ)/test_c_keyedset.o: $(TEST)/test_c_keyedset.c $(INC)/c_keyedset.h \
+  $(INC)/c_iterator.h $(INC)/c_map.h
+
 	gcc $(CFLAGS) $(IFLAGS) -c $< -o $@
 
-obj/test_c_list.o: test/test_c_list.c inc/c_list.h inc/c_iterator.h
+test_c_keyedset: $(OBJ)/test_c_keyedset.o c_collection.a
+	gcc $(OBJ)/test_c_keyedset.o c_collection.a $(LFLAGS) -o $@
+
+$(OBJ)/test_c_list.o: $(TEST)/test_c_list.c $(INC)/c_list.h $(INC)/c_iterator.h
+
 	gcc $(CFLAGS) $(IFLAGS) -c $< -o $@
 
-obj/test_c_map.o: test/test_c_map.c inc/c_map.h inc/c_iterator.h \
-  inc/hash_func.h
+test_c_list: $(OBJ)/test_c_list.o c_collection.a
+	gcc $(OBJ)/test_c_list.o c_collection.a $(LFLAGS) -o $@
+
+$(OBJ)/test_c_map.o: $(TEST)/test_c_map.c $(INC)/c_map.h $(INC)/c_iterator.h \
+  $(INC)/hash_func.h
+
 	gcc $(CFLAGS) $(IFLAGS) -c $< -o $@
 
-obj/test_c_symbol.o: test/test_c_symbol.c inc/c_iterator.h inc/c_symbol.h \
-  inc/c_iterator.h
+test_c_map: $(OBJ)/test_c_map.o c_collection.a
+	gcc $(OBJ)/test_c_map.o c_collection.a $(LFLAGS) -o $@
+
+$(OBJ)/test_c_symbol.o: $(TEST)/test_c_symbol.c $(INC)/c_iterator.h $(INC)/c_symbol.h
+
 	gcc $(CFLAGS) $(IFLAGS) -c $< -o $@
 
-clean: 
-	-rm -f collection.a
-	-rm -f obj/fnv.o
-	-rm -f obj/hash_func.o
-	-rm -f obj/c_buffer.o
-	-rm -f obj/c_hash.o
-	-rm -f obj/c_iterator.o
-	-rm -f obj/c_keyedset.o
-	-rm -f obj/c_list.o
-	-rm -f obj/c_map.o
-	-rm -f obj/c_symbol.o
-	-rm -f obj/test_c_buffer.o
-	-rm -f obj/test_c_hash.o
-	-rm -f obj/test_c_iterator.o
-	-rm -f obj/test_c_keyedset.o
-	-rm -f obj/test_c_list.o
-	-rm -f obj/test_c_map.o
-	-rm -f obj/test_c_symbol.o
-	-rm -f test_c_buffer
-	-rm -f test_c_hash
-	-rm -f test_c_iterator
-	-rm -f test_c_keyedset
-	-rm -f test_c_list
-	-rm -f test_c_map
-	-rm -f test_c_symbol
+test_c_symbol: $(OBJ)/test_c_symbol.o c_collection.a
+	gcc $(OBJ)/test_c_symbol.o c_collection.a $(LFLAGS) -o $@
 
-test: test_c_buffer test_c_hash test_c_iterator test_c_keyedset test_c_list test_c_map test_c_symbol collection.a
+test: test_c_buffer test_c_hash test_c_iterator test_c_keyedset test_c_list test_c_map test_c_symbol c_collection.a
 	./test_c_buffer
 	rm test_c_buffer
 	./test_c_hash
@@ -102,35 +112,34 @@ test: test_c_buffer test_c_hash test_c_iterator test_c_keyedset test_c_list test
 	./test_c_symbol
 	rm test_c_symbol
 
-test_c_buffer: obj/test_c_buffer.o collection.a
-	gcc obj/test_c_buffer.o collection.a $(LFLAGS) -o $@
+install: c_collection.a
+	-mkdir $(SHARED_LIB) 2>/dev/null || true
+	-cp c_collection.a $(SHARED_LIB)/
+	-mkdir $(SHARED_INC) 2>/dev/null || true
+	-cp $(INC)/hash_func.h $(SHARED_INC)/
+	-cp $(INC)/c_buffer.h $(SHARED_INC)/
+	-cp $(INC)/c_hash.h $(SHARED_INC)/
+	-cp $(INC)/c_iterator.h $(SHARED_INC)/
+	-cp $(INC)/c_keyedset.h $(SHARED_INC)/
+	-cp $(INC)/c_list.h $(SHARED_INC)/
+	-cp $(INC)/c_map.h $(SHARED_INC)/
+	-cp $(INC)/c_symbol.h $(SHARED_INC)/
 
-test_c_hash: obj/test_c_hash.o collection.a
-	gcc obj/test_c_hash.o collection.a $(LFLAGS) -o $@
-
-test_c_iterator: obj/test_c_iterator.o collection.a
-	gcc obj/test_c_iterator.o collection.a $(LFLAGS) -o $@
-
-test_c_keyedset: obj/test_c_keyedset.o collection.a
-	gcc obj/test_c_keyedset.o collection.a $(LFLAGS) -o $@
-
-test_c_list: obj/test_c_list.o collection.a
-	gcc obj/test_c_list.o collection.a $(LFLAGS) -o $@
-
-test_c_map: obj/test_c_map.o collection.a
-	gcc obj/test_c_map.o collection.a $(LFLAGS) -o $@
-
-test_c_symbol: obj/test_c_symbol.o collection.a
-	gcc obj/test_c_symbol.o collection.a $(LFLAGS) -o $@
-
-install: collection.a 
-	-cp collection.a $(HOME)/lib/
-	-mkdir $(HOME)/inc/collection
-	-cp inc/hash_func.h $(HOME)/inc/collection/
-	-cp inc/c_buffer.h $(HOME)/inc/collection/
-	-cp inc/c_hash.h $(HOME)/inc/collection/
-	-cp inc/c_iterator.h $(HOME)/inc/collection/
-	-cp inc/c_keyedset.h $(HOME)/inc/collection/
-	-cp inc/c_list.h $(HOME)/inc/collection/
-	-cp inc/c_map.h $(HOME)/inc/collection/
-	-cp inc/c_symbol.h $(HOME)/inc/collection/
+clean:
+	-rm -f c_collection.a
+	-rm -f $(OBJ)/fnv.o
+	-rm -f $(OBJ)/hash_func.o
+	-rm -f $(OBJ)/c_buffer.o
+	-rm -f $(OBJ)/c_hash.o
+	-rm -f $(OBJ)/c_iterator.o
+	-rm -f $(OBJ)/c_keyedset.o
+	-rm -f $(OBJ)/c_list.o
+	-rm -f $(OBJ)/c_map.o
+	-rm -f $(OBJ)/c_symbol.o
+	-rm -f test_c_buffer.o
+	-rm -f test_c_hash.o
+	-rm -f test_c_iterator.o
+	-rm -f test_c_keyedset.o
+	-rm -f test_c_list.o
+	-rm -f test_c_map.o
+	-rm -f test_c_symbol.o
