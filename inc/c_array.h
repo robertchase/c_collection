@@ -45,9 +45,9 @@ typedef struct C_ARRAY C_ARRAY;
 
 /*
  * Function  : c_array_create_base
- * Purpose   : creates a new buffer
+ * Purpose   : creates a new array
  * Parameters: element size
- *             initial size of internal buffer
+ *             initial size of internal array
  *             linear: if zero grow as a multiplier of factor
  *                     else grow by increasing size by factor
  *             factor
@@ -57,7 +57,7 @@ C_ARRAY *c_array_create_base(size_t, int, int, int);
 
 /*
  * Function  : c_array_create
- * Purpose   : creates a new buffer with reasonable defaults
+ * Purpose   : creates a new array with reasonable defaults
  * Parameters: element size
  * Return    : pointer to a C_ARRAY or NULL if out of memory
  */
