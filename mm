@@ -7,6 +7,7 @@ CFLAGS -Werror -Wall -Wmissing-prototypes -Wmissing-declarations -Wstrict-protot
 SOURCE fnv.c
 SOURCE hash_func.c
 
+SOURCE c_array.c
 SOURCE c_buffer.c
 SOURCE c_hash.c
 SOURCE c_iterator.c
@@ -15,6 +16,7 @@ SOURCE c_list.c
 SOURCE c_map.c
 SOURCE c_symbol.c
 
+TEST test_c_array.c
 TEST test_c_buffer.c
 TEST test_c_hash.c
 TEST test_c_iterator.c
@@ -25,6 +27,7 @@ TEST test_c_symbol.c
 
 INSTALL hash_func.h
 
+INSTALL c_array.h
 INSTALL c_buffer.h
 INSTALL c_hash.h
 INSTALL c_iterator.h
