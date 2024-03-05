@@ -47,7 +47,8 @@ $(OBJ)/c_symbol.o: $(SRC)/c_symbol.c $(INC)/c_hash.h $(INC)/c_iterator.h $(INC)/
   $(INC)/hash_func.h
 	gcc $(CFLAGS) $(IFLAGS) -c $< -o $@
 
-$(OBJ)/test_c_array.o: $(TEST)/test_c_array.c $(INC)/c_array.h $(INC)/c_iterator.h
+$(OBJ)/test_c_array.o: $(TEST)/test_c_array.c $(INC)/c_array.h $(INC)/c_iterator.h \
+  $(TEST)/../inc/c_array.h $(TEST)/../inc/c_iterator.h
 
 	gcc $(CFLAGS) $(IFLAGS) -c $< -o $@
 

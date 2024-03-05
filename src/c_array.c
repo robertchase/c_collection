@@ -10,10 +10,46 @@ struct C_ARRAY {
     int buffer_length;
     int length;
     void *buffer;
+
+    int current;
+    C_ITERATOR *iterator;
 };
 
 #define C_ARRAY_INITIAL_BUFFER_LENGTH 16
 
+static int
+_itr_init (void *ctx) {
+    C_ARRAY *a = (C_ARRAY *) ctx;
+    a -> current = 0;
+    return a -> length ? 1 : 0;
+}
+
+static int
+_itr_advance (void *ctx) {
+    C_ARRAY *a = (C_ARRAY *) ctx;
+    a -> current ++;
+    return a -> current < a -> length ? 1 : 0;
+}
+
+static void *
+_itr_retrieve (void *ctx) {
+    C_ARRAY *a = (C_ARRAY *) ctx;
+    return a -> buffer + a -> current * a -> element_size;
+}
+
+static int
+_itr_remove (void *ctx) {
+    C_ARRAY *a = (C_ARRAY *) ctx;
+    if (a -> current + 1 < a -> length) {
+        memmove(
+            a -> buffer + a -> current * a -> element_size,
+            a -> buffer + (a -> current + 1) * a -> element_size,
+            (a -> length - a -> current - 1) * a -> element_size
+        );
+    }
+    a -> length --;
+    return a -> current < a -> length ? 1 : 0;
+}
 
 C_ARRAY *
 c_array_create_base (size_t element_size, int initial, int is_linear, int factor) {
@@ -88,11 +124,38 @@ c_array_clear (C_ARRAY *a) {
 }
 
 void *
-c_array_get (C_ARRAY *a) {
-  return a -> buffer;
+c_array_get (C_ARRAY *a, int index) {
+  return a -> buffer + index * a -> element_size;
+}
+
+void *
+c_array_set (C_ARRAY *a, int index, void *item) {
+    void * result = NULL;
+    if (index < a -> length) {
+        result = a -> buffer + index * a -> element_size;
+        memcpy(result, item, a -> element_size);
+    }
+    return result;
 }
 
 int
 c_array_length (C_ARRAY *a) {
   return a -> length;
+}
+
+C_ITERATOR *
+c_array_iterator (C_ARRAY *a) {
+    if (a -> iterator) {
+        c_iterator_reset (a -> iterator);
+    } else {
+        a -> iterator = c_iterator_create (
+            _itr_init,
+            _itr_advance,
+            _itr_retrieve,
+            _itr_remove,
+            0,
+            (void *) a
+        );
+    }
+    return a -> iterator;
 }
