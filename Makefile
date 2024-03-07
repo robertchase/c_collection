@@ -128,16 +128,16 @@ test: test_c_array test_c_buffer test_c_hash test_c_iterator test_c_keyedset tes
 install: c_collection.a
 	-mkdir -p $(SHARED_LIB)
 	-cp c_collection.a $(SHARED_LIB)/
-	-mkdir -p $(SHARED_INC)
-	-cp $(INC)/hash_func.h $(SHARED_INC)/
-	-cp $(INC)/c_array.h $(SHARED_INC)/
-	-cp $(INC)/c_buffer.h $(SHARED_INC)/
-	-cp $(INC)/c_hash.h $(SHARED_INC)/
-	-cp $(INC)/c_iterator.h $(SHARED_INC)/
-	-cp $(INC)/c_keyedset.h $(SHARED_INC)/
-	-cp $(INC)/c_list.h $(SHARED_INC)/
-	-cp $(INC)/c_map.h $(SHARED_INC)/
-	-cp $(INC)/c_symbol.h $(SHARED_INC)/
+	-mkdir -p $(SHARED_INC)/c_collection
+	-cp $(INC)/hash_func.h $(SHARED_INC)/c_collection/
+	-cp $(INC)/c_array.h $(SHARED_INC)/c_collection/
+	-cp $(INC)/c_buffer.h $(SHARED_INC)/c_collection/
+	-cp $(INC)/c_hash.h $(SHARED_INC)/c_collection/
+	-cp $(INC)/c_iterator.h $(SHARED_INC)/c_collection/
+	-cp $(INC)/c_keyedset.h $(SHARED_INC)/c_collection/
+	-cp $(INC)/c_list.h $(SHARED_INC)/c_collection/
+	-cp $(INC)/c_map.h $(SHARED_INC)/c_collection/
+	-cp $(INC)/c_symbol.h $(SHARED_INC)/c_collection/
 
 clean:
 	-rm -f c_collection.a
