@@ -120,11 +120,13 @@ void c_array_clear (C_ARRAY *);
  * Function  : c_array_get
  * Purpose   : returns a pointer to the element at the index-th position
  * Parameters: pointer to C_ARRAY
- *             index (starting at zero)
+ *             index (zero is the first element)
  * Return    : a pointer to the index-th element
  * Notes     :
  *
- * 1. If index is out-of-bounds, a NULL value is returned.
+ * 1. A negative index starts from the right (-1 == length - 1).
+ *
+ * 2. If index is out-of-bounds, a NULL value is returned.
  */
 void *c_array_get (C_ARRAY *, int);
 
@@ -132,12 +134,14 @@ void *c_array_get (C_ARRAY *, int);
  * Function  : c_array_set
  * Purpose   : set a value in the array by index
  * Parameters: pointer to C_ARRAY
- *             index (starting at zero)
+ *             index (zero is the first element)
  *             pointer to value
  * Return    : a pointer to the index-th element
  * Notes     :
  *
- * 1. If index is out-of-bounds, a NULL value is returned.
+ * 1. A negative index starts from the right (-1 == length - 1).
+ *
+ * 2. If index is out-of-bounds, a NULL value is returned.
  */
 void *c_array_set (C_ARRAY *, int, void *);
 

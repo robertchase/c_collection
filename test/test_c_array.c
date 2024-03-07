@@ -29,6 +29,14 @@ int main (int argc, char **argv) {
     assert (0 == c_array_append (a, data + 1));
     assert (2 == c_array_length (a));
     assert (2 == * (int *) c_array_get (a, 1));
+    assert (NULL == c_array_get (a, 3));
+    assert (NULL == c_array_get (a, 10));
+
+    /* negative index */
+    assert (2 == * (int *) c_array_get (a, -1));
+    assert (1 == * (int *) c_array_get (a, -2));
+    assert (NULL == c_array_get (a, -3));
+    assert (NULL == c_array_get (a, -10));
 
     /* reset */
     c_array_clear (a);
@@ -40,8 +48,16 @@ int main (int argc, char **argv) {
     char *ptr = (char *) c_array_set(a, 0, data + 4);
     assert (ptr != NULL);
     assert ( * ptr == data[4]);
-    ptr = (char *) c_array_set(a, 1, data);
-    assert (ptr == NULL);
+    assert (NULL == c_array_set(a, 1, data));
+
+    /* negative set */
+    c_array_clear (a);
+    c_array_append (a, data);
+    c_array_append (a, data);
+    c_array_append (a, data);
+    assert (data[2] == * (char *) c_array_set (a, -1, data + 2));
+    assert (data[3] == * (char *) c_array_set (a, -3, data + 3));
+    assert (NULL == c_array_set (a, -10, data));
 
     /* force non-linear (default) buffer growth */
     c_array_clear (a);

@@ -120,20 +120,31 @@ c_array_append (C_ARRAY *a, void *item) {
 
 void
 c_array_clear (C_ARRAY *a) {
-  a -> length = 0;
+    a -> length = 0;
 }
 
 void *
 c_array_get (C_ARRAY *a, int index) {
-  return a -> buffer + index * a -> element_size;
+    void * result = NULL;
+    if (index < 0 && (-index) <= a -> length) {
+        index += a -> length;
+        result = a -> buffer + index * a -> element_size;
+    } else if (index >= 0 && index < a -> length) {
+        result = a -> buffer + index * a -> element_size;
+    }
+    return result;
 }
 
 void *
 c_array_set (C_ARRAY *a, int index, void *item) {
     void * result = NULL;
-    if (index < a -> length) {
+    if (index < 0 && (-index) <= a -> length) {
+        index += a -> length;
         result = a -> buffer + index * a -> element_size;
-        memcpy(result, item, a -> element_size);
+        memcpy (result, item, a -> element_size);
+    } else if (index >= 0 && index < a -> length) {
+        result = a -> buffer + index * a -> element_size;
+        memcpy (result, item, a -> element_size);
     }
     return result;
 }
